@@ -1,0 +1,6 @@
+.Nav {
+  display: flex;
+  flex-direction: column;
+  flex-basis: 400px;
+  padding: 10px;
+}
