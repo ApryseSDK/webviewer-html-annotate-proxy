@@ -80,15 +80,17 @@ app.get('/pdftron-download', async (req, res) => {
     headless: true,
   });
   const page = await browser.newPage();
-  await page.goto(`http://${PATH}`, {
-    waitUntil: 'networkidle0'
-  });
-
-  const buffer = await page.screenshot({ type: 'png', fullPage: true });
+  try {
+    await page.goto(`http://${PATH}`, {
+      waitUntil: 'networkidle0'
+    });
+    const buffer = await page.screenshot({ type: 'png', fullPage: true });
+    res.send(buffer);
+  } catch (err) {
+    console.log(err);
+    res.sendStatus(400);
+  }
   await browser.close();
-
-  // read the file from the filepath and respond to server
-  res.send(buffer);
 });
 
 app.use('/', function(clientRequest, clientResponse) {

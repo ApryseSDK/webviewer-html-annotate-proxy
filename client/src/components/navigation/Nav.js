@@ -43,6 +43,7 @@ const Nav = ({ handleSubmit, fetchError, showSpinner, handleDownload, browseMode
       <FormControl>
         <Button
           my={3}
+          disabled={showSpinner}
           onClick={() => {
             setError(false);
             if (!!url && isValidURL(url)) {
@@ -54,12 +55,11 @@ const Nav = ({ handleSubmit, fetchError, showSpinner, handleDownload, browseMode
         >
           {showSpinner && <Spinner mx={1} label="Loading website" />}Load the website
         </Button>
-        <Button my={3} onClick={() => handleDownload()}>
-          {showSpinner && <Spinner mx={1} label="Loading website" />}Download annotated PDF
-        </Button>
-        <Button my={3} onClick={() => browseMode()}
-        >
+        <Button my={3} onClick={() => browseMode()} disabled={showSpinner}>
           {showSpinner && <Spinner mx={1} label="Loading website" />}Browse the website
+        </Button>
+        <Button my={3} onClick={() => handleDownload()} disabled={showSpinner}>
+          {showSpinner && <Spinner mx={1} label="Loading website" />}Download annotated PDF
         </Button>
       </FormControl>
 

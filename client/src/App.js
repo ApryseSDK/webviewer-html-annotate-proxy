@@ -33,7 +33,8 @@ function App() {
         });
         setLoading(false);
       })
-      .catch((err) => {
+      .catch(err => {
+        console.log(err);
         setLoading(false);
         setFetchError('Trouble fetching the URL, please make sure the server is running. `cd server && npm start`');
       });
@@ -45,11 +46,20 @@ function App() {
       fetch(`http://${PATH}/pdftron-download`)
         .then(async (res) => {
           console.log(res);
-          await loadDocAndAnnots(res);
+          if (res.ok) {
+            try {
+              await loadDocAndAnnots(res);
+            } catch (err) {
+              console.log(err);
+              setFetchError('Trouble downloading, please refresh and start again.');
+            }
+          } else {
+            setFetchError('Trouble downloading, check server log.');
+          }
           setLoading(false);
         }).catch(err => {
           console.log(err);
-          setFetchError('Trouble donwloading, please refresh and start again ');
+          setFetchError('Trouble downloading, please make sure the server is running. `cd server && npm start`');
           setLoading(false);
         });
     }
