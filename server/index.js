@@ -140,9 +140,6 @@ app.use('/', function(clientRequest, clientResponse) {
         });
 
         serverResponse.on('end', function () {
-          // Make changes to HTML files when they're done being read.
-          body = body.replace(`example`, `Cat!`);
-
           // can also send dimensions in clientResponse.setHeader() but for some reason, on client can't read response.headers.get() but it's available in the network tab
           clientResponse.writeHead(serverResponse.statusCode, JSON.stringify(dimensions), serverResponse.headers);
           clientResponse.end(body);
