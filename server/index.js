@@ -102,6 +102,7 @@ app.get('/pdftron-download', async (req, res) => {
     headless: true,
   });
   const page = await browser.newPage();
+  // check again here to avoid server being blown up, tested with saving github
   try {
     await page.goto(`http://${PATH}`, {
       waitUntil: 'networkidle0'
