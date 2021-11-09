@@ -47,14 +47,17 @@ const isUrlNested = (url) => {
 const defaultViewport = { width: 1680, height: 1050 };
 var url;
 var dimensions;
+var urlExists;
 
 app.get('/pdftron-proxy', async function (req, res, next) {
   // this is the url retrieved from the input
   url = req.query.url;
+  // reset urlExists
+  urlExists = undefined;
   // ****** first check for human readable URL with simple regex
   if (!isValidURL(url)) {
     // send a custom code here so client can catch this 
-    res.status(999).send({data: 'Please enter a valid URL and try again.'}).end();
+    res.status(999).send({data: 'Please enter a valid URL and try again.'});
   } else {
     console.log('\x1b[31m%s\x1b[0m', `
       ***********************************************************************
@@ -70,7 +73,7 @@ app.get('/pdftron-proxy', async function (req, res, next) {
 
     // ****** second check for puppeteer being able to goto url
     try {
-      await page.goto(url, {
+      urlExists = await page.goto(url, {
         waitUntil: 'networkidle0'
       });
       // Get the "viewport" of the page, as reported by the page.
@@ -84,7 +87,7 @@ app.get('/pdftron-proxy', async function (req, res, next) {
       next();
     } catch (err) {
       console.log(err);
-      res.status(400).end();
+      res.status(999).send({data: 'Please enter a valid URL and try again.'});
     }
 
     await browser.close();
@@ -113,7 +116,7 @@ app.get('/pdftron-download', async (req, res) => {
 });
 
 app.use('/', function(clientRequest, clientResponse) {
-  if (isValidURL(url)) {
+  if (isValidURL(url) && !!urlExists) {
     const {
       parsedHost,
       parsedPort,
