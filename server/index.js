@@ -12,6 +12,11 @@ const puppeteer = require('puppeteer');
 const PORT = 3100;
 const PATH = `0.0.0.0:${PORT}`;
 
+const isValidURL = (url) => {
+  // eslint-disable-next-line no-useless-escape
+  return /(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/gi.test(url);
+}
+
 const getHostPortSSL = (url) => {
   const parsedHost = url.split('/').splice(2).splice(0, 1).join('/')
   let parsedPort;
@@ -46,31 +51,45 @@ var dimensions;
 app.get('/pdftron-proxy', async function (req, res, next) {
   // this is the url retrieved from the input
   url = req.query.url;
-  console.log('\x1b[31m%s\x1b[0m', `
-    ***********************************************************************
-    ************************** NEW REQUEST ********************************
-    ***********************************************************************
-  `);
+  // ****** first check for human readable URL with simple regex
+  if (!isValidURL(url)) {
+    // send a custom code here so client can catch this 
+    res.status(999).send({data: 'Please enter a valid URL and try again.'}).end();
+  } else {
+    console.log('\x1b[31m%s\x1b[0m', `
+      ***********************************************************************
+      ************************** NEW REQUEST ********************************
+      ***********************************************************************
+    `);
 
-  const browser = await puppeteer.launch({
-    defaultViewport,
-    headless: true,
-  });
-  const page = await browser.newPage();
-  await page.goto(url);
+    const browser = await puppeteer.launch({
+      defaultViewport,
+      headless: true,
+    });
+    const page = await browser.newPage();
 
-  // Get the "viewport" of the page, as reported by the page.
-  dimensions = await page.evaluate(() => {
-    return {
-      width: document.body.clientWidth,
-      height: document.body.clientHeight,
-    };
-  });
+    // ****** second check for puppeteer being able to goto url
+    try {
+      await page.goto(url, {
+        waitUntil: 'networkidle0'
+      });
+      // Get the "viewport" of the page, as reported by the page.
+      dimensions = await page.evaluate(() => {
+        return {
+          width: document.body.clientWidth,
+          height: document.body.clientHeight,
+        };
+      });
+      // next("router") pass control to next route and strip all req.query, if queried url contains nested route this will be lost in subsequest requests
+      next();
+    } catch (err) {
+      console.log(err);
+      res.status(400).end();
+    }
 
-  await browser.close();
+    await browser.close();
 
-  // next("router") pass control to next route and strip all req.query, if queried url contains nested route this will be lost in subsequest requests
-  next();
+  }
 });
 
 // need to be placed before app.use('/');
@@ -88,12 +107,13 @@ app.get('/pdftron-download', async (req, res) => {
     res.send(buffer);
   } catch (err) {
     console.log(err);
-    res.sendStatus(400);
+    res.status(400).end();
   }
   await browser.close();
 });
 
 app.use('/', function(clientRequest, clientResponse) {
+  if (isValidURL(url)) {
     const {
       parsedHost,
       parsedPort,
@@ -193,9 +213,9 @@ app.use('/', function(clientRequest, clientResponse) {
     });
   
     serverRequest.end();
+  }
+});    
 
-  });    
 
-
-  app.listen(PORT);
-  console.log(`Running on ${PATH}`);
+app.listen(PORT);
+console.log(`Running on ${PATH}`);

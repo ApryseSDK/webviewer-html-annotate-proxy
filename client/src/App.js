@@ -20,17 +20,21 @@ function App() {
     fetch(`http://${PATH}/pdftron-proxy?url=${url}`)
       .then(async (res) => {
         var size = { width: 1800, height: 7000 };
-        try {
-          size = JSON.parse(res.statusText);
-          setSize(size);
-        } catch (e) {
+        if (res.status === 999) {
+          res.json().then(j => setFetchError(j.data));
+        } else {
+          try {
+            size = JSON.parse(res.statusText);
+            setSize(size);
+          } catch (e) {
+          }
+          setResponse({
+            url: `http://${PATH}`,
+            thumb: '',
+            ...size,
+            origUrl: `http://${PATH}`,
+          });
         }
-        setResponse({
-          url: `http://${PATH}`,
-          thumb: '',
-          ...size,
-          origUrl: `http://${PATH}`,
-        });
         setLoading(false);
       })
       .catch(err => {
