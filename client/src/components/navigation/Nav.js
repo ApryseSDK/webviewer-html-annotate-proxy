@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   Heading,
   InputGroup,
@@ -14,7 +14,11 @@ import './Nav.css';
 
 const Nav = ({ handleSubmit, fetchError, showSpinner, handleDownload, browseMode }) => {
   const [url, setUrl] = useState('');
-  const [error, setError] = useState(false);
+  const [error, setError] = useState('');
+  
+  useEffect(() => {
+    setError(fetchError);
+  }, [fetchError]);
 
   // test is URL (without https://) is valid https://regexr.com/3e6m0
   const isValidURL = (url) => {
@@ -33,6 +37,7 @@ const Nav = ({ handleSubmit, fetchError, showSpinner, handleDownload, browseMode
         <FormLabel>URL of the page</FormLabel>
         <InputGroup
           onChange={(e) => {
+            setError('');
             setUrl(e.target.value);
           }}
         >
@@ -45,11 +50,10 @@ const Nav = ({ handleSubmit, fetchError, showSpinner, handleDownload, browseMode
           my={3}
           disabled={showSpinner}
           onClick={() => {
-            setError(false);
             if (!!url && isValidURL(url)) {
               handleSubmit(`https://${url}`);
             } else {
-              setError(true);
+              setError('Please enter a valid URL and try again.');
             }
           }}
         >
@@ -63,12 +67,7 @@ const Nav = ({ handleSubmit, fetchError, showSpinner, handleDownload, browseMode
         </Button>
       </FormControl>
 
-      {error && (
-        <Text color="red">
-          Please enter a valid URL try again.
-        </Text>
-      )}
-      {fetchError ? <Text color="red">{fetchError}</Text> : null}
+      {error ? <Text color="red">{error}</Text> : null}
     </div>
   );
 };
