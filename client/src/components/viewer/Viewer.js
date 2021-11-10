@@ -1,6 +1,6 @@
 import WebViewer from '@pdftron/webviewer';
 import { initializeHTMLViewer } from '@pdftron/webviewer-html';
-import { useContext, useEffect, useRef, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import WebViewerContext from '../../context/webviewer';
 import './Viewer.css';
 

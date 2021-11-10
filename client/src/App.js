@@ -1,8 +1,9 @@
 import Viewer from './components/viewer/Viewer';
 import Nav from './components/navigation/Nav';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import './App.css';
 import WebViewerContext from './context/webviewer';
+
 
 function App() {
   const [response, setResponse] = useState({});
@@ -94,7 +95,7 @@ function App() {
   };
 
   const browseMode = () => {
-    instance?.UI.setToolbarGroup('toolbarGroup-View');
+    instance && instance.UI.setToolbarGroup('toolbarGroup-View');
   }
 
   return (
