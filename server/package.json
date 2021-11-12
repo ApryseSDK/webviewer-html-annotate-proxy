@@ -9,9 +9,7 @@
   "author": "Andrey Safonov",
   "license": "ISC",
   "dependencies": {
-    "cors": "^2.8.5",
-    "express": "^4.17.1",
-    "puppeteer": "^7.0.4"
+    "@pdftron/webviewer-html-proxy-server": "^1.0.0"
   },
   "devDependencies": {}
 }
