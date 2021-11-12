@@ -1,7 +1,7 @@
 # webviewer-html-annotate-proxy
 Annotate live HTML pages by simply providing URL. This way you can preserve all the animations and any interactive content. [Watch the video](https://youtu.be/OGswLirzMW8) to see a demo and walkthrough of the project.
 
-The sample uses [WebViewer HTML by PDFTron](https://www.npmjs.com/package/@pdftron/webviewer-html) for annotating HTML, http proxy and [puppeteer](https://www.npmjs.com/package/puppeteer) for proxying the website from URL. 
+The sample uses [WebViewer HTML by PDFTron](https://www.npmjs.com/package/@pdftron/webviewer-html) for annotating HTML, [Proxy Server by PDFTron](https://www.npmjs.com/package/@pdftron/webviewer-html-proxy-server) and [Puppeteer](https://www.npmjs.com/package/puppeteer) for proxying the website from URL. 
 
 ## Install
 
@@ -36,6 +36,6 @@ npm start
 
 1. Client app makes the request to the Node.js Express server.
 2. Node.js Express server serves the endpoint `/pdftron-proxy?url=someurl.com`, 
-3. From the `url` query parameter, we download all the website dependencies (HTML, CSS, JS, images).
+3. From the `url` query parameter, we start requesting all the website dependencies (HTML, CSS, JS, images).
 4. The server responds back with proxied resources.
 5. WebViewer then renders out live HTML that can be annotated.
