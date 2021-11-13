@@ -12,13 +12,14 @@ function App() {
   const [instance, setInstance] = useState();
   const [size, setSize] = useState({});
 
+  const SERVER_ROOT = '0.0.0.0';
   const PORT = 3100;
-  const PATH = `0.0.0.0:${PORT}`;
+  const PATH = `http://${SERVER_ROOT}:${PORT}`;
 
   const loadURL = (url) => {
     setLoading(true);
     setFetchError('');
-    fetch(`http://${PATH}/pdftron-proxy?url=${url}`)
+    fetch(`${PATH}/pdftron-proxy?url=${url}`)
       .then(async (res) => {
         var size = { width: 1800, height: 7000 };
         if (res.status === 999) {
@@ -30,10 +31,10 @@ function App() {
           } catch (e) {
           }
           setResponse({
-            url: `http://${PATH}`,
+            url: `${PATH}`,
             thumb: '',
             ...size,
-            origUrl: `http://${PATH}`,
+            origUrl: `${PATH}`,
           });
         }
         setLoading(false);
@@ -48,7 +49,7 @@ function App() {
   const downloadPDF = () => {
     if (response.url) {
       setLoading(true);
-      fetch(`http://${PATH}/pdftron-download`)
+      fetch(`${PATH}/pdftron-download`)
         .then(async (res) => {
           console.log(res);
           if (res.ok) {
@@ -72,12 +73,12 @@ function App() {
 
   const loadDocAndAnnots = async (buffer) => {
     setLoading(true);
+    console.log('start create doc to download')
     const doc = await instance.Core.createDocument(buffer, {
       extension: 'png',
       pageSizes: [size],
     });
 
-    // exportAnnotations as xfdfString seem to misplace annotations
     const xfdf = await instance.docViewer
       .getAnnotationManager()
       .exportAnnotations();
