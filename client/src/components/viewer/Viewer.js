@@ -15,7 +15,7 @@ const Viewer = ({ res, loadURL }) => {
       viewer.current
     ).then(async (instance) => {
       setInstance(instance);
-      const { FitMode, docViewer } = instance;
+      const { FitMode } = instance;
       instance.setFitMode(FitMode.FitWidth);
       // disable some incompatible tools
       instance.disableElements([
@@ -31,14 +31,6 @@ const Viewer = ({ res, loadURL }) => {
       ]);
       // Extends WebViewer to allow loading HTML5 files from URL or static folder.
       const htmlModule = await initializeHTMLViewer(instance);
-
-      docViewer.on('documentLoaded', () => {
-        setTimeout(() => {
-          if (instance.getFitMode() !== FitMode.FitWidth) {
-            instance.setFitMode(FitMode.FitWidth);
-          }
-        }, 1500);
-      });
 
       setHTMLModule(htmlModule);
 
