@@ -6,7 +6,7 @@
     "@chakra-ui/react": "^1.6.4",
     "@emotion/react": "^11.4.0",
     "@emotion/styled": "^11.3.0",
-    "@pdftron/webviewer": "^8.2.0-20211006",
+    "@pdftron/webviewer": "^8.2.0",
     "@pdftron/webviewer-html": "^4.0.1",
     "framer-motion": "^4.1.17",
     "react": "^17.0.1",
