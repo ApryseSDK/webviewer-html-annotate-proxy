@@ -16,10 +16,12 @@ function App() {
   const PORT = 3100;
   const PATH = `http://${SERVER_ROOT}:${PORT}`;
 
-  const loadURL = (url) => {
+  const loadURL = async (url) => {
     setLoading(true);
     setFetchError('');
-    fetch(`${PATH}/pdftron-proxy?url=${url}`)
+
+    // first fetch for the proxied url
+    await fetch(`${PATH}/pdftron-proxy?url=${url}`)
       .then(async (res) => {
         var size = { width: 1800, height: 7000 };
         if (res.status === 999) {
@@ -27,15 +29,34 @@ function App() {
         } else {
           try {
             size = JSON.parse(res.statusText);
-            setSize(size);
           } catch (e) {
+            console.log('Error in fetching size')
           }
-          setResponse({
-            url: `${PATH}`,
-            thumb: '',
-            ...size,
-            origUrl: `${PATH}`,
-          });
+          setSize(size);
+
+          // second fetch for the text layer data
+          await fetch(`${PATH}/pdftron-text-data`)
+            .then(async (res) => res.json())
+            .then(selectionData => {
+              setResponse({
+                url: `${PATH}`,
+                textLayer: selectionData,
+                thumb: '',
+                ...size,
+                origUrl: `${PATH}`,
+              });
+            })
+            .catch(err => {
+              setResponse({
+                url: `${PATH}`,
+                textLayer: {},
+                thumb: '',
+                ...size,
+                origUrl: `${PATH}`,
+              });
+              console.log(err);
+              setFetchError(`Can't retrieve text layer`);
+            });
         }
         setLoading(false);
       })

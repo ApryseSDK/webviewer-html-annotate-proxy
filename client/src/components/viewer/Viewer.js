@@ -15,7 +15,7 @@ const Viewer = ({ res, loadURL }) => {
       viewer.current
     ).then(async (instance) => {
       setInstance(instance);
-      const { FitMode } = instance;
+      const { FitMode, docViewer } = instance;
       instance.setFitMode(FitMode.FitWidth);
       // disable some incompatible tools
       instance.disableElements([
@@ -32,6 +32,13 @@ const Viewer = ({ res, loadURL }) => {
       // Extends WebViewer to allow loading HTML5 files from URL or static folder.
       const htmlModule = await initializeHTMLViewer(instance);
 
+      // needs to reset FitMode on subsequent loads
+      docViewer.on('documentLoaded', () => {
+        if (instance.getFitMode() !== FitMode.FitWidth) {
+          instance.setFitMode(FitMode.FitWidth);
+        }
+      });
+
       setHTMLModule(htmlModule);
 
       loadURL(`https://www.pdftron.com/`);
@@ -41,8 +48,8 @@ const Viewer = ({ res, loadURL }) => {
 
   useEffect(() => {
     if (HTMLModule && Object.keys(res).length > 0) {
-      const { url, width, height, thumb, origUrl } = res;
-      HTMLModule.loadHTMLPage({ url, width, height, thumb, origUrl });
+      const { url, textLayer, width, height, thumb, origUrl } = res;
+      HTMLModule.loadHTMLPage({ url, textLayer, width, height, thumb, origUrl });
     }
   }, [HTMLModule, res]);
 
