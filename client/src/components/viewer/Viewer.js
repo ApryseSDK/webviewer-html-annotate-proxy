@@ -19,10 +19,6 @@ const Viewer = ({ res, loadURL }) => {
       instance.setFitMode(FitMode.FitWidth);
       // disable some incompatible tools
       instance.disableElements([
-        'highlightToolGroupButton',
-        'underlineToolGroupButton',
-        'strikeoutToolGroupButton',
-        'squigglyToolGroupButton',
         'viewControlsButton',
         'downloadButton',
         'printButton',
