@@ -28,7 +28,7 @@ function App() {
           res.json().then(j => setFetchError(j.data));
         } else {
           try {
-            size = JSON.parse(res.statusText);
+            size = JSON.parse(res.headers.get('dimensions'));
           } catch (e) {
             console.log('Error in fetching size')
           }
