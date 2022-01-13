@@ -24,7 +24,8 @@ function App() {
       // first fetch for the proxied url
       const proxyUrlRes = await fetch(`${PATH}/pdftron-proxy?url=${url}`);
       if (proxyUrlRes.status === 999) {
-        proxyUrlRes.json().then(e => setFetchError(e.data));
+        const response = await proxyUrlRes.json();
+        setFetchError(response.data);
       } else {
         let actualPageDimensions = pageDimensions;
         try {
