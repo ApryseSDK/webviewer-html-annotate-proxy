@@ -15,7 +15,7 @@ function App() {
   const SERVER_ROOT = '0.0.0.0';
   const PORT = 3100;
   const PATH = `http://${SERVER_ROOT}:${PORT}`;
-
+  
   const loadURL = async (url) => {
     setLoading(true);
     setFetchError('');
