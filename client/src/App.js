@@ -30,7 +30,7 @@ function App() {
           const actualSize = JSON.parse(proxyUrlRes.headers.get('dimensions'));
           setSize(actualSize);
         } catch (e) {
-          console.log('Error in fetching size')
+          console.error('Error in fetching size')
         }
 
         try {
@@ -52,7 +52,7 @@ function App() {
             ...size,
             origUrl: `${PATH}`,
           });
-          console.log(error);
+          console.error(error);
           setFetchError(`Can't retrieve text layer`);
         } finally {
           setLoading(false);
@@ -65,34 +65,33 @@ function App() {
     }
   };
 
-  const downloadPDF = () => {
+  const downloadPDF = async () => {
     if (response.url) {
       setLoading(true);
-      fetch(`${PATH}/pdftron-download`)
-        .then(async (res) => {
-          console.log(res);
-          if (res.ok) {
-            try {
-              await loadDocAndAnnots(res);
-            } catch (err) {
-              console.log(err);
-              setFetchError('Trouble downloading, please refresh and start again.');
-            }
-          } else {
-            setFetchError('Trouble downloading, check server log.');
+      try {
+        const downloadPdfRes = await fetch(`${PATH}/pdftron-download`);
+        if (downloadPdfRes.ok) {
+          try {
+            await loadDocAndAnnots(downloadPdfRes);
+          } catch (error) {
+            console.error(error);
+            setFetchError('Trouble downloading, please refresh and start again.');
           }
-          setLoading(false);
-        }).catch(err => {
-          console.log(err);
-          setFetchError('Trouble downloading, please make sure the server is running. `cd server && npm start`');
-          setLoading(false);
-        });
+        } else {
+          setFetchError('Trouble downloading, check server log.');
+        }
+        setLoading(false);
+      }
+      catch (error) {
+        console.error(error);
+        setFetchError('Trouble downloading, please make sure the server is running. `cd server && npm start`');
+        setLoading(false);
+      }
     }
   };
 
   const loadDocAndAnnots = async (buffer) => {
     setLoading(true);
-    console.log('start create doc to download')
     const doc = await instance.Core.createDocument(buffer, {
       extension: 'png',
       pageSizes: [size],
