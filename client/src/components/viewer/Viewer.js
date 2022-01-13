@@ -11,7 +11,7 @@ const Viewer = ({ res, loadURL }) => {
 
   useEffect(() => {
     WebViewer(
-      { path: 'lib' },
+      { path: '/lib' },
       viewer.current
     ).then(async (instance) => {
       setInstance(instance);
