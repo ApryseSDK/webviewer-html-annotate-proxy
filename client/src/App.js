@@ -37,7 +37,7 @@ function App() {
         try {
           // second fetch for the text layer data
           const textDataRes = await fetch(`${PATH}/pdftron-text-data`);
-          const selectionData = textDataRes.json();
+          const selectionData = await textDataRes.json();
           setResponse({
             url: `${PATH}`,
             textLayer: selectionData,
