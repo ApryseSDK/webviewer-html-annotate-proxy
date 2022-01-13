@@ -10,7 +10,7 @@ function App() {
   const [loading, setLoading] = useState(false);
   const [fetchError, setFetchError] = useState('');
   const [instance, setInstance] = useState();
-  const [size, setSize] = useState({ width: 1800, height: 7000 });
+  const [pageDimensions, setPageDimensions] = useState({ width: 1800, height: 7000 });
 
   const SERVER_ROOT = '0.0.0.0';
   const PORT = 3100;
@@ -26,11 +26,12 @@ function App() {
       if (proxyUrlRes.status === 999) {
         proxyUrlRes.json().then(e => setFetchError(e.data));
       } else {
+        let actualPageDimensions = pageDimensions;
         try {
-          const actualSize = JSON.parse(proxyUrlRes.headers.get('dimensions'));
-          setSize(actualSize);
+          actualPageDimensions = JSON.parse(proxyUrlRes.headers.get('dimensions'));
+          setPageDimensions(actualPageDimensions);
         } catch (e) {
-          console.error('Error in fetching size')
+          console.error('Error in fetching page dimensions');
         }
 
         try {
@@ -41,7 +42,7 @@ function App() {
             url: `${PATH}`,
             textLayer: selectionData,
             thumb: '',
-            ...size,
+            ...actualPageDimensions,
             origUrl: `${PATH}`,
           });          
         } catch (error) {
@@ -49,7 +50,7 @@ function App() {
             url: `${PATH}`,
             textLayer: {},
             thumb: '',
-            ...size,
+            ...actualPageDimensions,
             origUrl: `${PATH}`,
           });
           console.error(error);
@@ -94,7 +95,7 @@ function App() {
     setLoading(true);
     const doc = await instance.Core.createDocument(buffer, {
       extension: 'png',
-      pageSizes: [size],
+      pageSizes: [pageDimensions],
     });
 
     const xfdf = await instance.docViewer
