@@ -23,42 +23,60 @@ function App() {
     try {
       // first fetch for the proxied url
       const proxyUrlRes = await fetch(`${PATH}/pdftron-proxy?url=${url}`);
-      if (proxyUrlRes.status === 999) {
-        const response = await proxyUrlRes.json();
-        setFetchError(response.data);
+      if (proxyUrlRes.status === 400) {
+        setFetchError((await proxyUrlRes.json()).errorMessage);
+        setLoading(false);
       } else {
         let actualPageDimensions = pageDimensions;
         try {
-          actualPageDimensions = JSON.parse(proxyUrlRes.headers.get('dimensions'));
-          setPageDimensions(actualPageDimensions);
-        } catch (e) {
-          console.error('Error in fetching page dimensions');
+          actualPageDimensions = (await proxyUrlRes.json()).pageDimensions;
+        } catch {
+          console.error('Error in fetching page dimensions. Using default dimensions.');
         }
+        setResponse({
+          url: PATH,
+          // textLayer: selectionData,
+          thumb: '',
+          ...actualPageDimensions,
+          origUrl: PATH,
+        });
+        setLoading(false);
+        // // const jsonResponse = await proxyUrlRes.json();
+        // // console.log('jsonResponse', jsonResponse);
+        // console.log(proxyUrlRes.status, await proxyUrlRes.json());
 
-        try {
-          // second fetch for the text layer data
-          const textDataRes = await fetch(`${PATH}/pdftron-text-data`);
-          const selectionData = await textDataRes.json();
-          setResponse({
-            url: `${PATH}`,
-            textLayer: selectionData,
-            thumb: '',
-            ...actualPageDimensions,
-            origUrl: `${PATH}`,
-          });          
-        } catch (error) {
-          setResponse({
-            url: `${PATH}`,
-            textLayer: {},
-            thumb: '',
-            ...actualPageDimensions,
-            origUrl: `${PATH}`,
-          });
-          console.error(error);
-          setFetchError(`Can't retrieve text layer`);
-        } finally {
-          setLoading(false);
-        }
+        // let actualPageDimensions = pageDimensions;
+        // try {
+        //   actualPageDimensions = JSON.parse(proxyUrlRes.headers.get('dimensions'));
+        //   setPageDimensions(actualPageDimensions);
+        // } catch (e) {
+        //   console.error('Error in fetching page dimensions');
+        // }
+
+        // try {
+        //   // second fetch for the text layer data
+        //   const textDataRes = await fetch(`${PATH}/pdftron-text-data`);
+        //   const selectionData = await textDataRes.json();
+        //   setResponse({
+        //     url: `${PATH}`,
+        //     textLayer: selectionData,
+        //     thumb: '',
+        //     ...actualPageDimensions,
+        //     origUrl: `${PATH}`,
+        //   });          
+        // } catch (error) {
+        //   setResponse({
+        //     url: `${PATH}`,
+        //     textLayer: {},
+        //     thumb: '',
+        //     ...actualPageDimensions,
+        //     origUrl: `${PATH}`,
+        //   });
+        //   console.error(error);
+        //   setFetchError(`Can't retrieve text layer`);
+        // } finally {
+        //   setLoading(false);
+        // }
       }
     } catch (error) {
       console.error(error);
