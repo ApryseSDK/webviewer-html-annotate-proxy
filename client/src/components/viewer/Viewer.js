@@ -38,6 +38,7 @@ const Viewer = ({ res, loadURL }) => {
       setHTMLModule(htmlModule);
 
       loadURL(`https://www.pdftron.com/`);
+      // loadURL(`https://github.com/`);
     });
     // eslint-disable-next-line
   }, []);
