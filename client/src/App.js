@@ -22,38 +22,67 @@ function App() {
 
     try {
       // first fetch for the proxied url
-      const proxyUrlRes = await fetch(`${PATH}/pdftron-proxy?url=${url}`, { credentials: 'include' });
+      const proxyUrlRes = await fetch(`${PATH}/pdftron-set-proxy-url?url=${url}`, { credentials: 'include' });
       if (proxyUrlRes.status === 400) {
         setFetchError((await proxyUrlRes.json()).errorMessage);
         setLoading(false);
       } else {
-        setLoading(false);
-
-        // this is the case if API /pdftron-proxy sends back selectionData and not using next()
+        let actualPageDimensions = pageDimensions;
+        try {
+          actualPageDimensions = (await proxyUrlRes.json()).pageDimensions;
+        } catch {
+          console.error('Error in fetching page dimensions. Using default dimensions.');
+        }
+        // setResponse({
+        //   url: PATH,
+        //   // textLayer: selectionData,
+        //   thumb: '',
+        //   ...actualPageDimensions,
+        //   origUrl: PATH,
+        // });
+        // setLoading(false);
         // // const jsonResponse = await proxyUrlRes.json();
         // // console.log('jsonResponse', jsonResponse);
         // console.log(proxyUrlRes.status, await proxyUrlRes.json());
 
-        let actualPageDimensions = pageDimensions;
-        try {
-          actualPageDimensions = JSON.parse(proxyUrlRes.headers.get('pageDimensions'));
-          setPageDimensions(actualPageDimensions);
-        } catch (e) {
-          console.error('Error in fetching page dimensions');
-        }
+        // let actualPageDimensions = pageDimensions;
+        // try {
+        //   actualPageDimensions = JSON.parse(proxyUrlRes.headers.get('dimensions'));
+        //   setPageDimensions(actualPageDimensions);
+        // } catch (e) {
+        //   console.error('Error in fetching page dimensions');
+        // }
 
-        setResponse({
-          url: `${PATH}`,
-          textLayer: {}, // selectionData
-          thumb: '',
-          ...actualPageDimensions,
-          origUrl: `${PATH}`,
-        });
+        try {
+          // second fetch for the text layer data
+          // const textDataRes = await fetch(`${PATH}/pdftron-text-data`, { credentials: 'include' });
+          const textDataRes = await fetch(`${PATH}/pdftron-text-data`, { credentials: 'include' });
+          const selectionData = await textDataRes.json();
+          setResponse({
+            url: `${PATH}`,
+            textLayer: selectionData,
+            thumb: '',
+            ...actualPageDimensions,
+            origUrl: `${PATH}`,
+          });          
+        } catch (error) {
+          setResponse({
+            url: `${PATH}`,
+            textLayer: {},
+            thumb: '',
+            ...actualPageDimensions,
+            origUrl: `${PATH}`,
+          });
+          console.error(error);
+          setFetchError(`Can't retrieve text layer`);
+        } finally {
+          setLoading(false);
+        }
       }
     } catch (error) {
       console.error(error);
       setLoading(false);
-      setFetchError('Trouble fetching the URL, please make sure the server is running. `cd server && npm start`');
+      setFetchError('Trouble fetching the URL, please make sure the server is running. `cd server && npm start`');      
     }
   };
 
