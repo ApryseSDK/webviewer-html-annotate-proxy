@@ -10,7 +10,7 @@ function App() {
   const [loading, setLoading] = useState(false);
   const [fetchError, setFetchError] = useState('');
   const [instance, setInstance] = useState();
-  const [pageDimensions, setPageDimensions] = useState({ width: 1800, height: 7000 });
+  const [pageDimensions, setPageDimensions] = useState({ width: 1680, height: 7000 });
   const [validUrl, setValidUrl] = useState('');
 
   const SERVER_ROOT = 'localhost';
@@ -34,19 +34,20 @@ function App() {
         let selectionData = {};
         let validUrl = url;
         try {
+          // retrieve pageDimensions from response
           actualPageDimensions = proxyUrlResJson.pageDimensions;
           setPageDimensions(actualPageDimensions);
+
+          // retrieve selectionData from response
           selectionData = proxyUrlResJson.selectionData;
+
+          // retrieve validUrl from response
           validUrl = proxyUrlResJson.validUrl;
           setValidUrl(validUrl);
         } catch {
           console.error('Error in fetching page dimensions. Using default dimensions.');
         }
 
-        // try {
-        //   // second fetch for the text layer data
-        //   const textDataRes = await fetch(`${PATH}/pdftron-text-data?url=${validUrl}`, { credentials: 'include' });
-        //   const selectionData = await textDataRes.json();
         setResponse({
           url: `${PATH}`,
           textLayer: selectionData,
@@ -54,19 +55,7 @@ function App() {
           ...actualPageDimensions,
           origUrl: `${PATH}`,
         });
-        // } catch (error) {
-        //   setResponse({
-        //     url: `${PATH}?url=${validUrl}`,
-        //     textLayer: {},
-        //     thumb: '',
-        //     ...actualPageDimensions,
-        //     origUrl: `${PATH}`,
-        //   });
-        //   console.error(error);
-        //   setFetchError(`Can't retrieve text layer`);
-        // } finally {
         setLoading(false);
-        // }
       }
     } catch (error) {
       console.error(error);

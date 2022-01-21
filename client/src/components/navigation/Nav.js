@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import {
   Heading,
   InputGroup,
-  InputLeftAddon,
   Input,
   Button,
   Text,
@@ -15,7 +14,7 @@ import './Nav.css';
 const Nav = ({ handleSubmit, fetchError, showSpinner, handleDownload, browseMode }) => {
   const [url, setUrl] = useState('');
   const [error, setError] = useState('');
-  
+
   useEffect(() => {
     setError(fetchError);
   }, [fetchError]);
@@ -32,6 +31,8 @@ const Nav = ({ handleSubmit, fetchError, showSpinner, handleDownload, browseMode
       <Text py={5}>
         In this demo, you can pass any URL. The URL passed in will be proxied
         and you will be able to annotate directly here.
+        <br />
+        For best results, please copy and paste the URL.
       </Text>
       <FormControl id="domain" my={3}>
         <FormLabel>URL of the page</FormLabel>
@@ -41,8 +42,7 @@ const Nav = ({ handleSubmit, fetchError, showSpinner, handleDownload, browseMode
             setUrl(e.target.value);
           }}
         >
-          <InputLeftAddon children="https://" />
-          <Input placeholder="mysite" />
+          <Input placeholder="https://www.pdftron.com/" />
         </InputGroup>
       </FormControl>
       <FormControl>
@@ -51,7 +51,7 @@ const Nav = ({ handleSubmit, fetchError, showSpinner, handleDownload, browseMode
           disabled={showSpinner}
           onClick={() => {
             if (!!url && isValidURL(url)) {
-              handleSubmit(`https://${url}`);
+              handleSubmit(url);
             } else {
               setError('Please enter a valid URL and try again.');
             }
