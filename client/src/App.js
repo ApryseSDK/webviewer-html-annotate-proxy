@@ -28,25 +28,25 @@ function App() {
         setFetchError(response.data);
       } else {
         let actualPageDimensions = pageDimensions;
-        try {
-          actualPageDimensions = JSON.parse(proxyUrlRes.headers.get('dimensions'));
-          setPageDimensions(actualPageDimensions);
-        } catch (e) {
-          console.error('Error in fetching page dimensions');
-        }
+        // try {
+        //   actualPageDimensions = JSON.parse(proxyUrlRes.headers.get('dimensions'));
+        //   setPageDimensions(actualPageDimensions);
+        // } catch (e) {
+        //   console.error('Error in fetching page dimensions');
+        // }
 
-        try {
-          // second fetch for the text layer data
-          const textDataRes = await fetch(`${PATH}/pdftron-text-data`);
-          const selectionData = await textDataRes.json();
-          setResponse({
-            url: `${PATH}`,
-            textLayer: selectionData,
-            thumb: '',
-            ...actualPageDimensions,
-            origUrl: `${PATH}`,
-          });          
-        } catch (error) {
+        // try {
+        //   // second fetch for the text layer data
+        //   const textDataRes = await fetch(`${PATH}/pdftron-text-data`);
+        //   const selectionData = await textDataRes.json();
+        //   setResponse({
+        //     url: `${PATH}`,
+        //     textLayer: selectionData,
+        //     thumb: '',
+        //     ...actualPageDimensions,
+        //     origUrl: `${PATH}`,
+        //   });          
+        // } catch (error) {
           setResponse({
             url: `${PATH}`,
             textLayer: {},
@@ -54,11 +54,11 @@ function App() {
             ...actualPageDimensions,
             origUrl: `${PATH}`,
           });
-          console.error(error);
+          // console.error(error);
           setFetchError(`Can't retrieve text layer`);
-        } finally {
+        // } finally {
           setLoading(false);
-        }
+        // }
       }
     } catch (error) {
       console.error(error);
