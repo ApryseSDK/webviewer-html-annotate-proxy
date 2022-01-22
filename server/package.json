@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js"
+    "start": "node --insecure-http-parser index.js"
   },
   "author": "Andrey Safonov",
   "license": "ISC",
