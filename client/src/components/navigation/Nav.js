@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import {
   Heading,
   InputGroup,
-  InputLeftAddon,
   Input,
   Button,
   Text,
@@ -14,16 +13,29 @@ import './Nav.css';
 
 const Nav = ({ handleSubmit, fetchError, showSpinner, handleDownload, browseMode }) => {
   const [url, setUrl] = useState('');
+  const [urlWithHttp, setUrlWithHttp] = useState('');
   const [error, setError] = useState('');
-  
+
+  const regexURL = /(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/gi;
+  const regexURLWithHttp = /^(http(s)?:\/\/.){1}/gi;
+
   useEffect(() => {
     setError(fetchError);
   }, [fetchError]);
 
+  useEffect(() => {
+    if (regexURLWithHttp.test(url)) {
+      setUrlWithHttp(url);
+    } else {
+      setUrlWithHttp(`https://${url}`);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [url]);
+
   // test is URL (without https://) is valid https://regexr.com/3e6m0
   const isValidURL = (url) => {
     // eslint-disable-next-line no-useless-escape
-    return /(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/gi.test(url);
+    return regexURL.test(url);
   }
 
   return (
@@ -32,6 +44,8 @@ const Nav = ({ handleSubmit, fetchError, showSpinner, handleDownload, browseMode
       <Text py={5}>
         In this demo, you can pass any URL. The URL passed in will be proxied
         and you will be able to annotate directly here.
+        <br />
+        For best results, please copy and paste the URL.
       </Text>
       <FormControl id="domain" my={3}>
         <FormLabel>URL of the page</FormLabel>
@@ -41,8 +55,7 @@ const Nav = ({ handleSubmit, fetchError, showSpinner, handleDownload, browseMode
             setUrl(e.target.value);
           }}
         >
-          <InputLeftAddon children="https://" />
-          <Input placeholder="mysite" />
+          <Input placeholder="https://www.pdftron.com/" />
         </InputGroup>
       </FormControl>
       <FormControl>
@@ -51,7 +64,7 @@ const Nav = ({ handleSubmit, fetchError, showSpinner, handleDownload, browseMode
           disabled={showSpinner}
           onClick={() => {
             if (!!url && isValidURL(url)) {
-              handleSubmit(`https://${url}`);
+              handleSubmit(urlWithHttp);
             } else {
               setError('Please enter a valid URL and try again.');
             }

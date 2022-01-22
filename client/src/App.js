@@ -10,7 +10,7 @@ function App() {
   const [loading, setLoading] = useState(false);
   const [fetchError, setFetchError] = useState('');
   const [instance, setInstance] = useState();
-  const [pageDimensions, setPageDimensions] = useState({ width: 1800, height: 7000 });
+  const [pageDimensions, setPageDimensions] = useState({ width: 1680, height: 7000 });
   const [validUrl, setValidUrl] = useState('');
 
   const SERVER_ROOT = 'localhost';
@@ -34,10 +34,14 @@ function App() {
         let selectionData = {};
         let validUrl = url;
         try {
-          console.log('pageDimensions', proxyUrlResJson.pageDimensions);
+          // retrieve pageDimensions from response
           actualPageDimensions = proxyUrlResJson.pageDimensions;
           setPageDimensions(actualPageDimensions);
+
+          // retrieve selectionData from response
           selectionData = proxyUrlResJson.selectionData;
+
+          // retrieve validUrl from response
           validUrl = proxyUrlResJson.validUrl;
           setValidUrl(validUrl);
         } catch {
