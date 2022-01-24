@@ -37,12 +37,7 @@ const Viewer = ({ res, loadURL }) => {
 
       setHTMLModule(htmlModule);
 
-      // loadURL(`https://www.pdftron.com/`);
-      // loadURL(`https://www.youtube.com/`);
-      loadURL(`https://www.mdlottery.com/about-us/legal-information/#disclaimer`);
-      // loadURL(`https://www.valottery.com/aboutus/faq`);
-      // loadURL(`https://www.mdlottery.com/`);
-      // loadURL(`https://www.pdftron.com/documentation/web/get-started/npm/`);
+      loadURL(`https://www.pdftron.com/`);
     });
     // eslint-disable-next-line
   }, []);

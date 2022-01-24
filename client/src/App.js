@@ -16,7 +16,7 @@ function App() {
   const SERVER_ROOT = 'localhost';
   const PORT = 3100;
   const PATH = `http://${SERVER_ROOT}:${PORT}`;
-  
+
   const loadURL = async (url) => {
     setLoading(true);
     setFetchError('');
@@ -46,51 +46,30 @@ function App() {
           setValidUrl(validUrl);
         } catch {
           console.error('Error in fetching page dimensions. Using default dimensions.');
-        }        
-        // try {
-        //   actualPageDimensions = JSON.parse(proxyUrlRes.headers.get('dimensions'));
-        //   setPageDimensions(actualPageDimensions);
-        // } catch (e) {
-        //   console.error('Error in fetching page dimensions');
-        // }
+        }
 
-        // try {
-        //   // second fetch for the text layer data
-        //   const textDataRes = await fetch(`${PATH}/pdftron-text-data`);
-        //   const selectionData = await textDataRes.json();
-        //   setResponse({
-        //     url: `${PATH}`,
-        //     textLayer: selectionData,
-        //     thumb: '',
-        //     ...actualPageDimensions,
-        //     origUrl: `${PATH}`,
-        //   });          
-        // } catch (error) {
-          setResponse({
-            url: `${PATH}`,
-            textLayer: {},
-            thumb: '',
-            ...actualPageDimensions,
-            origUrl: `${PATH}`,
-          });
-          // console.error(error);
-          setFetchError(`Can't retrieve text layer`);
-        // } finally {
-          setLoading(false);
-        // }
+        setResponse({
+          url: `${PATH}`,
+          textLayer: selectionData,
+          thumb: '',
+          ...actualPageDimensions,
+          origUrl: `${PATH}`,
+        });
+        setLoading(false);
       }
     } catch (error) {
       console.error(error);
       setLoading(false);
-      setFetchError('Trouble fetching the URL, please make sure the server is running. `cd server && npm start`');      
+      setFetchError('Trouble fetching the URL, please make sure the server is running. `cd server && npm start`');
     }
   };
 
   const downloadPDF = async () => {
     if (response.url) {
       setLoading(true);
+      setFetchError('');
       try {
-        const downloadPdfRes = await fetch(`${PATH}/pdftron-download`);
+        const downloadPdfRes = await fetch(`${PATH}/pdftron-download?url=${validUrl}`);
         if (downloadPdfRes.ok) {
           try {
             await loadDocAndAnnots(downloadPdfRes);

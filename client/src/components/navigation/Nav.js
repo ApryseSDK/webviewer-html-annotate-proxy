@@ -16,6 +16,7 @@ const Nav = ({ handleSubmit, fetchError, showSpinner, handleDownload, browseMode
   const [urlWithHttp, setUrlWithHttp] = useState('');
   const [error, setError] = useState('');
 
+  // eslint-disable-next-line no-useless-escape
   const regexURL = /(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/gi;
   const regexURLWithHttp = /^(http(s)?:\/\/.){1}/gi;
 
