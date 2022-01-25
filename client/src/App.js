@@ -22,16 +22,29 @@ const App = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [url, setUrl] = useState('');
+  const [urlWithHttp, setUrlWithHttp] = useState('');
   const [validUrl, setValidUrl] = useState('');
-  const [pageDimensions, setPageDimensions] = useState({ width: 1800, height: 7000 });
+  const [pageDimensions, setPageDimensions] = useState({ width: 1440, height: 7000 });
 
   const SERVER_ROOT = 'localhost';
   const PORT = 3100;
   const PATH = `http://${SERVER_ROOT}:${PORT}`;
 
+  // eslint-disable-next-line no-useless-escape
+  const regexURL = /(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/gi;
+  const regexURLWithHttp = /^(http(s)?:\/\/.){1}/gi;
+  useEffect(() => {
+    if (regexURLWithHttp.test(url)) {
+      setUrlWithHttp(url);
+    } else {
+      setUrlWithHttp(`https://${url}`);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [url]);
+
+  // test is URL (without https://) is valid https://regexr.com/3e6m0
   const isValidURL = (url) => {
-    // eslint-disable-next-line no-useless-escape
-    return /(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/gi.test(url);
+    return regexURL.test(url);
   }
 
   useEffect(() => {
@@ -198,7 +211,7 @@ const App = () => {
             disabled={loading}
             onClick={() => {
               if (!!url && isValidURL(url)) {
-                loadURL(url);
+                loadURL(urlWithHttp);
               } else {
                 setError('Please enter a valid URL and try again.');
               }
