@@ -35,7 +35,6 @@ const Nav = ({ handleSubmit, fetchError, showSpinner, handleDownload, browseMode
 
   // test is URL (without https://) is valid https://regexr.com/3e6m0
   const isValidURL = (url) => {
-    // eslint-disable-next-line no-useless-escape
     return regexURL.test(url);
   }
 
