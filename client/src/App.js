@@ -91,9 +91,14 @@ const App = () => {
         let selectionData = {};
         let validUrl = url;
         try {
+          // retrieve pageDimensions from response
           actualPageDimensions = proxyUrlResJson.pageDimensions;
           setPageDimensions(actualPageDimensions);
+
+          // retrieve selectionData from response
           selectionData = proxyUrlResJson.selectionData;
+
+          // retrieve validUrl from response
           validUrl = proxyUrlResJson.validUrl;
           setValidUrl(validUrl);
         } catch {
@@ -108,8 +113,8 @@ const App = () => {
           origUrl: `${PATH}`,
         });
       }
-    } catch (err) {
-      console.error(err);
+    } catch (error) {
+      console.error(error);
       setError('Trouble fetching the URL, please make sure the server is running. `cd server && npm start`');
     }
 
@@ -121,7 +126,7 @@ const App = () => {
       setLoading(true);
       setError('');
       try {
-        const downloadPdfRes = await fetch(`${PATH}/pdftron-download?url=${validUrl}`, { credentials: 'include' });
+        const downloadPdfRes = await fetch(`${PATH}/pdftron-download?url=${validUrl}`);
         if (downloadPdfRes.ok) {
           try {
             await loadDocAndAnnots(downloadPdfRes);
