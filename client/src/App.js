@@ -10,7 +10,7 @@ function App() {
   const [loading, setLoading] = useState(false);
   const [fetchError, setFetchError] = useState('');
   const [instance, setInstance] = useState();
-  const [pageDimensions, setPageDimensions] = useState({ width: 1680, height: 7000 });
+  const [pageDimensions, setPageDimensions] = useState({ width: 1440, height: 7000 });
   const [validUrl, setValidUrl] = useState('');
 
   const SERVER_ROOT = 'localhost';
