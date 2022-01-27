@@ -3,6 +3,7 @@ import {
   Heading,
   InputGroup,
   Input,
+  Checkbox,
   Button,
   Text,
   FormLabel,
@@ -11,7 +12,7 @@ import {
 } from '@chakra-ui/react';
 import './Nav.css';
 
-const Nav = ({ handleSubmit, fetchError, showSpinner, handleDownload, browseMode }) => {
+const Nav = ({ handleSubmit, fetchError, showSpinner, handleDownload, browseMode, handleScrolling }) => {
   const [url, setUrl] = useState('');
   const [urlWithHttp, setUrlWithHttp] = useState('');
   const [error, setError] = useState('');
@@ -78,6 +79,10 @@ const Nav = ({ handleSubmit, fetchError, showSpinner, handleDownload, browseMode
         <Button my={3} onClick={() => handleDownload()} disabled={showSpinner}>
           {showSpinner && <Spinner mx={1} label="Loading website" />}Download annotated PDF
         </Button>
+
+        <Checkbox my={3} onChange={(e) => handleScrolling(e.target.checked)}>
+          Scroll website
+        </Checkbox>
       </FormControl>
 
       {error ? <Text color="red">{error}</Text> : null}

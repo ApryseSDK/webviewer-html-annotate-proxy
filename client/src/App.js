@@ -12,6 +12,7 @@ function App() {
   const [instance, setInstance] = useState();
   const [pageDimensions, setPageDimensions] = useState({ width: 1440, height: 7000 });
   const [validUrl, setValidUrl] = useState('');
+  const [scrolling, setScrolling] = useState(false);
 
   const SERVER_ROOT = 'localhost';
   const PORT = 3100;
@@ -54,6 +55,7 @@ function App() {
           thumb: '',
           ...actualPageDimensions,
           origUrl: `${PATH}`,
+          scrollable: scrolling,
         });
         setLoading(false);
       }
@@ -117,6 +119,10 @@ function App() {
     instance && instance.UI.setToolbarGroup('toolbarGroup-View');
   }
 
+  const handleScrolling = (e) => {
+    setScrolling(e);
+  }
+
   return (
     <WebViewerContext.Provider value={{ instance, setInstance }}>
       <div className="App">
@@ -126,6 +132,7 @@ function App() {
           showSpinner={loading}
           handleDownload={downloadPDF}
           browseMode={browseMode}
+          handleScrolling={handleScrolling}
         />
         <Viewer res={response} loadURL={loadURL} />
       </div>
