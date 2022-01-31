@@ -47,10 +47,10 @@ function App() {
         } catch {
           console.error('Error in fetching page dimensions. Using default dimensions.');
         }
-        const urlData = new URL(validUrl);
+        const { pathname } = new URL(validUrl);
 
         setResponse({
-          url: `${PATH}${urlData.pathname}`,
+          url: `${PATH}${pathname}`,
           textLayer: selectionData,
           thumb: '',
           ...actualPageDimensions,
