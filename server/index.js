@@ -6,7 +6,5 @@ const OPTIONS = {
   // CORS_OPTIONS: { origin: "http://localhost:3000", credentials: true },
   // COOKIE_SETTING: { sameSite: 'none', secure: true },
 };
-const PATH = `https://html-proxy.pdftron.com`;
-
 
 HTMLProxyServer.createServer(OPTIONS);

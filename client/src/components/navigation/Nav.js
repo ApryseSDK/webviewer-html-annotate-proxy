@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import {
   Heading,
-  InputGroup,
   Input,
   Checkbox,
   Button,
@@ -39,6 +38,14 @@ const Nav = ({ handleSubmit, fetchError, showSpinner, handleDownload, browseMode
     return regexURL.test(url);
   }
 
+  const onSubmit = () => {
+    if (!!url && isValidURL(url)) {
+      handleSubmit(urlWithHttp);
+    } else {
+      setError('Please enter a valid URL and try again.');
+    }
+  }
+
   return (
     <div className="Nav">
       <Heading size="md">WebViewer HTML</Heading>
@@ -50,26 +57,23 @@ const Nav = ({ handleSubmit, fetchError, showSpinner, handleDownload, browseMode
       </Text>
       <FormControl id="domain" my={3}>
         <FormLabel>URL of the page</FormLabel>
-        <InputGroup
+        <Input placeholder="https://www.pdftron.com/"
           onChange={(e) => {
             setError('');
             setUrl(e.target.value);
           }}
-        >
-          <Input placeholder="https://www.pdftron.com/" />
-        </InputGroup>
+          onKeyPress={(e) => {
+            if (e.key === "Enter") {
+              onSubmit();
+            }
+          }}
+        />
       </FormControl>
       <FormControl>
         <Button
           my={3}
           disabled={showSpinner}
-          onClick={() => {
-            if (!!url && isValidURL(url)) {
-              handleSubmit(urlWithHttp);
-            } else {
-              setError('Please enter a valid URL and try again.');
-            }
-          }}
+          onClick={onSubmit}
         >
           {showSpinner && <Spinner mx={1} label="Loading website" />}Load the website
         </Button>
