@@ -10,7 +10,7 @@ function App() {
   const [loading, setLoading] = useState(false);
   const [fetchError, setFetchError] = useState('');
   const [instance, setInstance] = useState();
-  const [pageDimensions, setPageDimensions] = useState({ width: 1440, height: 7000 });
+  const pageDimensions = { width: 1440, height: 770 };
   const [validUrl, setValidUrl] = useState('');
 
   const SERVER_ROOT = 'localhost';
@@ -30,17 +30,8 @@ function App() {
         setLoading(false);
       } else {
         const proxyUrlResJson = await proxyUrlRes.json();
-        let actualPageDimensions = pageDimensions;
-        let selectionData = {};
         let validUrl = url;
         try {
-          // retrieve pageDimensions from response
-          actualPageDimensions = proxyUrlResJson.pageDimensions;
-          setPageDimensions(actualPageDimensions);
-
-          // retrieve selectionData from response
-          selectionData = proxyUrlResJson.selectionData;
-
           // retrieve validUrl from response
           validUrl = proxyUrlResJson.validUrl;
           setValidUrl(validUrl);
@@ -51,9 +42,8 @@ function App() {
 
         setResponse({
           url: `${PATH}${pathname}`,
-          textLayer: selectionData,
           thumb: '',
-          ...actualPageDimensions,
+          ...pageDimensions,
           origUrl: `${PATH}`,
         });
         setLoading(false);
