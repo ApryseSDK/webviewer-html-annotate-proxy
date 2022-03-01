@@ -20,6 +20,8 @@ const Viewer = ({ res, loadURL }) => {
       // disable some incompatible tools
       instance.disableElements([
         'viewControlsButton',
+        'leftPanel',
+        'leftPanelButton',
         'downloadButton',
         'printButton',
         'fileAttachmentToolGroupButton',
