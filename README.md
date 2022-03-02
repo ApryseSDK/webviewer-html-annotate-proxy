@@ -1,5 +1,5 @@
 # webviewer-html-annotate-proxy
-Annotate live HTML pages by simply providing URL. This way you can preserve all the animations and any interactive content. [Watch the video](https://youtu.be/OGswLirzMW8) to see a demo and walkthrough of the project.
+Annotate live HTML pages by simply providing URL. This way you can preserve all the animations and any interactive content. [Watch the video](https://youtu.be/pamn97LMD6s) to see a demo and walkthrough of the project.
 
 The sample uses [WebViewer HTML by PDFTron](https://www.npmjs.com/package/@pdftron/webviewer-html) for annotating HTML, [Proxy Server by PDFTron](https://www.npmjs.com/package/@pdftron/webviewer-html-proxy-server) and [Puppeteer](https://www.npmjs.com/package/puppeteer) for proxying the website from URL. 
 
