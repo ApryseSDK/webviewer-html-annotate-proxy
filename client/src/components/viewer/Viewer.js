@@ -17,16 +17,6 @@ const Viewer = ({ res, loadURL }) => {
       setInstance(instance);
       const { FitMode, docViewer } = instance;
       instance.setFitMode(FitMode.FitWidth);
-      // disable some incompatible tools
-      instance.disableElements([
-        'viewControlsButton',
-        'leftPanel',
-        'leftPanelButton',
-        'downloadButton',
-        'printButton',
-        'fileAttachmentToolGroupButton',
-        'toolbarGroup-Edit',
-      ]);
       // Extends WebViewer to allow loading HTML5 files from URL or static folder.
       const htmlModule = await initializeHTMLViewer(instance);
 
