@@ -44,7 +44,7 @@ function App() {
           url: `${PATH}${pathname}`,
           thumb: '',
           ...pageDimensions,
-          origUrl: `${PATH}`,
+          origUrl: validUrl,
         });
         setLoading(false);
       }
