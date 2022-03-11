@@ -41,10 +41,10 @@ function App() {
         const { pathname } = new URL(validUrl);
 
         setResponse({
-          url: `${PATH}${pathname}`,
+          iframeUrl: `${PATH}${pathname}`,
           thumb: '',
           ...pageDimensions,
-          origUrl: validUrl,
+          urlToProxy: validUrl,
         });
         setLoading(false);
       }
