@@ -56,7 +56,7 @@ function App() {
   };
 
   const downloadPDF = async () => {
-    if (response.url) {
+    if (response.iframeUrl) {
       setLoading(true);
       setFetchError('');
       try {
