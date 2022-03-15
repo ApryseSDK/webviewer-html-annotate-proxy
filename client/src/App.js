@@ -1,6 +1,6 @@
 import Viewer from './components/viewer/Viewer';
 import Nav from './components/navigation/Nav';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './App.css';
 import WebViewerContext from './context/webviewer';
 
@@ -10,7 +10,8 @@ function App() {
   const [loading, setLoading] = useState(false);
   const [fetchError, setFetchError] = useState('');
   const [instance, setInstance] = useState();
-  const pageDimensions = { width: 1440, height: 770 };
+  const defaultPageDimensions = { width: 1440, height: 770 };
+  const [pageDimensions, setPageDimensions] = useState(defaultPageDimensions);
   const [validUrl, setValidUrl] = useState('');
 
   const SERVER_ROOT = 'localhost';
@@ -35,15 +36,17 @@ function App() {
           // retrieve validUrl from response
           validUrl = proxyUrlResJson.validUrl;
           setValidUrl(validUrl);
+          // retrieve pageDimensions from response (use for downloading)
+          setPageDimensions(proxyUrlResJson.pageDimensions);
         } catch {
-          console.error('Error in fetching page dimensions. Using default dimensions.');
+          console.error('Error in calling `/pdftron-proxy`. Check server log');
         }
         const { pathname } = new URL(validUrl);
 
         setResponse({
           url: `${PATH}${pathname}`,
           thumb: '',
-          ...pageDimensions,
+          ...defaultPageDimensions,
           origUrl: validUrl,
         });
         setLoading(false);
