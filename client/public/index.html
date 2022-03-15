@@ -25,6 +25,21 @@
       Learn how to configure a non-root public URL by running `npm run build`.
     -->
     <title>WebViewer HTML</title>
+    <script>
+      {
+        var WS = window.WebSocket;
+        function DevWebSocket(s) {
+          if (s === "ws://localhost:3000/ws") {
+            console.info("[DEV NOTICE] Live Reload Has Been Disabled");
+            return {};
+          } else {
+            // Pass through other usage of sockets
+            return new WS(s);
+          }
+        }
+        window.WebSocket = DevWebSocket;
+      }
+    </script>
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>

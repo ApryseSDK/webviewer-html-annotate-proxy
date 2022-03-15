@@ -28,7 +28,7 @@ const Viewer = ({ res, loadURL }) => {
       });
 
       setHTMLModule(htmlModule);
-
+      
       loadURL(`https://www.pdftron.com/`);
     });
     // eslint-disable-next-line
