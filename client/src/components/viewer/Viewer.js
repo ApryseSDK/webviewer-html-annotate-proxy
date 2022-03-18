@@ -36,8 +36,8 @@ const Viewer = ({ res, loadURL }) => {
 
   useEffect(() => {
     if (HTMLModule && Object.keys(res).length > 0) {
-      const { url, textLayer, width, height, thumb, origUrl } = res;
-      HTMLModule.loadHTMLPage({ url, textLayer, width, height, thumb, origUrl });
+      const { iframeUrl, width, height, urlToProxy } = res;
+      HTMLModule.loadHTMLPage({ iframeUrl, width, height, urlToProxy });
     }
   }, [HTMLModule, res]);
 

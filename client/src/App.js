@@ -45,10 +45,9 @@ function App() {
 
         // send back defaultPageDimensions so iframeHeight can be updated dynamically from script injection
         setResponse({
-          url: `${PATH}${pathname}`,
-          thumb: '',
+          iframeUrl: `${PATH}${pathname}`,
           ...defaultPageDimensions,
-          origUrl: validUrl,
+          urlToProxy: validUrl,
         });
         setLoading(false);
       }
@@ -60,7 +59,7 @@ function App() {
   };
 
   const downloadPDF = async () => {
-    if (response.url) {
+    if (response.iframeUrl) {
       setLoading(true);
       setFetchError('');
       try {
