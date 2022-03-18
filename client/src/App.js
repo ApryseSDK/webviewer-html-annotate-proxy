@@ -1,6 +1,6 @@
 import Viewer from './components/viewer/Viewer';
 import Nav from './components/navigation/Nav';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import './App.css';
 import WebViewerContext from './context/webviewer';
 
@@ -11,7 +11,7 @@ function App() {
   const [fetchError, setFetchError] = useState('');
   const [instance, setInstance] = useState();
   const defaultPageDimensions = { width: 1440, height: 770 };
-  const [pageDimensions, setPageDimensions] = useState(defaultPageDimensions);
+  const [pageDimensionsForDownload, setPageDimensionsForDownload] = useState(defaultPageDimensions);
   const [validUrl, setValidUrl] = useState('');
 
   const SERVER_ROOT = 'localhost';
@@ -37,12 +37,13 @@ function App() {
           validUrl = proxyUrlResJson.validUrl;
           setValidUrl(validUrl);
           // retrieve pageDimensions from response (use for downloading)
-          setPageDimensions(proxyUrlResJson.pageDimensions);
+          setPageDimensionsForDownload(proxyUrlResJson.pageDimensions);
         } catch {
           console.error('Error in calling `/pdftron-proxy`. Check server log');
         }
         const { pathname } = new URL(validUrl);
 
+        // send back defaultPageDimensions so iframeHeight can be updated dynamically from script injection
         setResponse({
           url: `${PATH}${pathname}`,
           thumb: '',
@@ -88,7 +89,7 @@ function App() {
     setLoading(true);
     const doc = await instance.Core.createDocument(buffer, {
       extension: 'png',
-      pageSizes: [pageDimensions],
+      pageSizes: [pageDimensionsForDownload],
     });
 
     const xfdf = await instance.docViewer
