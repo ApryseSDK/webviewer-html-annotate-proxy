@@ -41,10 +41,10 @@ function App() {
         const { pathname } = new URL(validUrl);
 
         setResponse({
-          url: `${PATH}${pathname}`,
+          iframeUrl: `${PATH}${pathname}`,
           thumb: '',
           ...pageDimensions,
-          origUrl: validUrl,
+          urlToProxy: validUrl,
         });
         setLoading(false);
       }
@@ -56,7 +56,7 @@ function App() {
   };
 
   const downloadPDF = async () => {
-    if (response.url) {
+    if (response.iframeUrl) {
       setLoading(true);
       setFetchError('');
       try {
