@@ -28,7 +28,7 @@ const Viewer = ({ res, loadURL }) => {
       });
 
       setHTMLModule(htmlModule);
-      
+
       loadURL(`https://www.pdftron.com/`);
     });
     // eslint-disable-next-line
@@ -36,8 +36,8 @@ const Viewer = ({ res, loadURL }) => {
 
   useEffect(() => {
     if (HTMLModule && Object.keys(res).length > 0) {
-      const { iframeUrl, textLayer, width, height, thumb, urlToProxy } = res;
-      HTMLModule.loadHTMLPage({ iframeUrl, textLayer, width, height, thumb, urlToProxy });
+      const { iframeUrl, width, height, urlToProxy } = res;
+      HTMLModule.loadHTMLPage({ iframeUrl, width, height, urlToProxy });
     }
   }, [HTMLModule, res]);
 

@@ -10,7 +10,8 @@ function App() {
   const [loading, setLoading] = useState(false);
   const [fetchError, setFetchError] = useState('');
   const [instance, setInstance] = useState();
-  const pageDimensions = { width: 1440, height: 770 };
+  const defaultPageDimensions = { width: 1440, height: 770 };
+  const [pageDimensionsForDownload, setPageDimensionsForDownload] = useState(defaultPageDimensions);
   const [validUrl, setValidUrl] = useState('');
 
   const SERVER_ROOT = 'localhost';
@@ -35,15 +36,17 @@ function App() {
           // retrieve validUrl from response
           validUrl = proxyUrlResJson.validUrl;
           setValidUrl(validUrl);
+          // retrieve pageDimensions from response (use for downloading)
+          setPageDimensionsForDownload(proxyUrlResJson.pageDimensions);
         } catch {
-          console.error('Error in fetching page dimensions. Using default dimensions.');
+          console.error('Error in calling `/pdftron-proxy`. Check server log');
         }
         const { pathname } = new URL(validUrl);
 
+        // send back defaultPageDimensions so iframeHeight can be updated dynamically from script injection
         setResponse({
           iframeUrl: `${PATH}${pathname}`,
-          thumb: '',
-          ...pageDimensions,
+          ...defaultPageDimensions,
           urlToProxy: validUrl,
         });
         setLoading(false);
@@ -85,7 +88,7 @@ function App() {
     setLoading(true);
     const doc = await instance.Core.createDocument(buffer, {
       extension: 'png',
-      pageSizes: [pageDimensions],
+      pageSizes: [pageDimensionsForDownload],
     });
 
     const xfdf = await instance.docViewer
