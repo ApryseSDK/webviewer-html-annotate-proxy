@@ -11,7 +11,6 @@ function App() {
   const [fetchError, setFetchError] = useState('');
   const [instance, setInstance] = useState();
   const defaultPageDimensions = { width: 1440, height: 770 };
-  const [pageDimensionsForDownload, setPageDimensionsForDownload] = useState(defaultPageDimensions);
   const [validUrl, setValidUrl] = useState('');
 
   const SERVER_ROOT = 'localhost';
@@ -36,8 +35,6 @@ function App() {
           // retrieve validUrl from response
           validUrl = proxyUrlResJson.validUrl;
           setValidUrl(validUrl);
-          // retrieve pageDimensions from response (use for downloading)
-          setPageDimensionsForDownload(proxyUrlResJson.pageDimensions);
         } catch {
           console.error('Error in calling `/pdftron-proxy`. Check server log');
         }
@@ -66,7 +63,12 @@ function App() {
         const downloadPdfRes = await fetch(`${PATH}/pdftron-download?url=${validUrl}`);
         if (downloadPdfRes.ok) {
           try {
-            await loadDocAndAnnots(downloadPdfRes);
+            // if sending only buffer from the server: res.send(buffer) then use res.blob() to avoid having the API consumed twice
+            const downloadPdfResJson = await downloadPdfRes.json();
+            const { buffer, pageDimensions } = downloadPdfResJson;
+
+            const blob = new Blob([new Uint8Array(buffer.data)]);
+            await loadDocAndAnnots(blob, pageDimensions);
           } catch (error) {
             console.error(error);
             setFetchError('Trouble downloading, please refresh and start again.');
@@ -84,11 +86,11 @@ function App() {
     }
   };
 
-  const loadDocAndAnnots = async (buffer) => {
+  const loadDocAndAnnots = async (buffer, pageDimensions) => {
     setLoading(true);
     const doc = await instance.Core.createDocument(buffer, {
       extension: 'png',
-      pageSizes: [pageDimensionsForDownload],
+      pageSizes: [pageDimensions],
     });
 
     const xfdf = await instance.docViewer
