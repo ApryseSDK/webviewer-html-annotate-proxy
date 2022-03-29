@@ -86,9 +86,9 @@ function App() {
     }
   };
 
-  const loadDocAndAnnots = async (buffer, pageDimensions) => {
+  const loadDocAndAnnots = async (blob, pageDimensions) => {
     setLoading(true);
-    const doc = await instance.Core.createDocument(buffer, {
+    const doc = await instance.Core.createDocument(blob, {
       extension: 'png',
       pageSizes: [pageDimensions],
     });
@@ -97,8 +97,8 @@ function App() {
       .getAnnotationManager()
       .exportAnnotations();
     const data = await doc.getFileData({ xfdfString: xfdf });
-    const blob = new Blob([data], { type: 'application/pdf' });
-    const url = URL.createObjectURL(blob);
+    const annotationsBlob = new Blob([data], { type: 'application/pdf' });
+    const url = URL.createObjectURL(annotationsBlob);
     const a = document.createElement('a');
     a.href = url;
     a.download = 'annotated';
