@@ -5,32 +5,22 @@ The sample uses [WebViewer HTML by PDFTron](https://www.npmjs.com/package/@pdftr
 
 ## Install
 
-#### Client
-```
-cd client
-npm i
-```
+We have prepared a single script for installing both client and server, after installing dependencies for the sample itself.
 
-#### Server
 ```
-cd server
-npm i
+npm install
+npm run install-all-deps
 ```
-
 
 ## Run
 
-#### Client
+We have prepared a single script for running both client and server.
+
 ```
-cd client
-npm start
+npm run dev
 ```
 
-#### Server
-```
-cd server
-npm start
-```
+Alternatively, you can also install and run client and server separately.
 
 ## How it works
 
