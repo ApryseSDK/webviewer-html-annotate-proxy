@@ -1,0 +1,25 @@
+{
+  "name": "webviewer-html-annotate-proxy",
+  "version": "1.0.0",
+  "description": "Annotate live HTML pages by simply providing URL",
+  "scripts": {
+    "server": "npm start --prefix server",
+    "client": "npm start --prefix client",
+    "dev": "concurrently \"npm run client\" \"npm run server\"",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/XodoDocs/webviewer-html-annotate-proxy.git"
+  },
+  "author": "Maggie Vu",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/XodoDocs/webviewer-html-annotate-proxy/issues"
+  },
+  "homepage": "https://github.com/XodoDocs/webviewer-html-annotate-proxy#readme",
+  "dependencies": {
+    "concurrently": "^7.0.0",
+    "dotenv": "^16.0.0"
+  }
+}

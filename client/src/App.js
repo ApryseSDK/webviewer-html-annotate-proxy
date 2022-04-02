@@ -14,7 +14,7 @@ function App() {
   const [validUrl, setValidUrl] = useState('');
 
   const SERVER_ROOT = 'localhost';
-  const PORT = 3100;
+  const PORT = process.env.REACT_APP_NODE_PORT;
   const PATH = `http://${SERVER_ROOT}:${PORT}`;
 
   const loadURL = async (url) => {
