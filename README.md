@@ -9,7 +9,7 @@ We have prepared a single script for installing both client and server, after in
 
 ```
 npm install
-npm run install-all-deps
+npm run setup
 ```
 
 ## Run
@@ -17,7 +17,7 @@ npm run install-all-deps
 We have prepared a single script for running both client and server.
 
 ```
-npm run dev
+npm run start
 ```
 
 Alternatively, you can also install and run client and server separately.

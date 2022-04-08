@@ -3,12 +3,12 @@
   "version": "1.0.0",
   "description": "Annotate live HTML pages by simply providing URL",
   "scripts": {
-    "server": "npm start --prefix server",
-    "client": "npm start --prefix client",
-    "dev": "concurrently \"npm run client\" \"npm run server\"",
-    "server-dependencies": "npm install --prefix server",
-    "client-dependencies": "npm install --prefix client",
-    "install-all-deps": "concurrently \"npm run server-dependencies\" \"npm run client-dependencies\"",
+    "start-server": "npm start --prefix server",
+    "start-client": "npm start --prefix client",
+    "start": "concurrently \"npm run start-client\" \"npm run start-server\" -n \"CLIENT,SERVER\" -c \"bgBlueBright.whiteBright,bgMagenta.whiteBright\"",
+    "install-server": "npm install --prefix server",
+    "install-client": "npm install --prefix client",
+    "setup": "concurrently \"npm run install-client\" \"npm run install-server\" -n \"CLIENT,SERVER\" -c \"bgBlueBright.whiteBright,bgMagenta.whiteBright\"",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
