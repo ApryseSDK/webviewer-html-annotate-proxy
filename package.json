@@ -8,7 +8,7 @@
     "start": "concurrently \"npm run start-client\" \"npm run start-server\" -n \"CLIENT,SERVER\" -c \"bgBlueBright.whiteBright,bgMagenta.whiteBright\"",
     "install-server": "npm install --prefix server",
     "install-client": "npm install --prefix client",
-    "setup": "concurrently \"npm run install-client\" \"npm run install-server\" -n \"CLIENT,SERVER\" -c \"bgBlueBright.whiteBright,bgMagenta.whiteBright\"",
+    "setup": "npm i && concurrently \"npm run install-client\" \"npm run install-server\" -n \"CLIENT,SERVER\" -c \"bgBlueBright.whiteBright,bgMagenta.whiteBright\"",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {

@@ -5,10 +5,9 @@ The sample uses [WebViewer HTML by PDFTron](https://www.npmjs.com/package/@pdftr
 
 ## Install
 
-We have prepared a single script for installing both client and server, after installing dependencies for the sample itself.
+We have prepared a single script for installing both client and server.
 
 ```
-npm install
 npm run setup
 ```
 
