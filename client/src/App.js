@@ -38,11 +38,12 @@ function App() {
         } catch {
           console.error('Error in calling `/pdftron-proxy`. Check server log');
         }
-        const { pathname } = new URL(validUrl);
+        const { href, origin, pathname } = new URL(validUrl);
+        const hrefWithoutOrigin = href.split(origin)[1] || pathname;
 
         // send back defaultPageDimensions so iframeHeight can be updated dynamically from script injection
         setResponse({
-          iframeUrl: `${PATH}${pathname}`,
+          iframeUrl: `${PATH}${hrefWithoutOrigin}`,
           ...defaultPageDimensions,
           urlToProxy: validUrl,
         });
