@@ -24,12 +24,9 @@ function App() {
     try {
       // first fetch for the proxied url
       const proxyUrlRes = await fetch(`${PATH}/pdftron-proxy?url=${url}`, { credentials: 'include' });
-      setValidUrl(url);
       if (proxyUrlRes.status === 400) {
         setFetchError((await proxyUrlRes.json()).errorMessage);
         setLoading(false);
-        // if the proxied URL is not valid, reset it
-        setValidUrl("");
       } else {
         const proxyUrlResJson = await proxyUrlRes.json();
         let validUrl = url;
@@ -38,8 +35,6 @@ function App() {
           validUrl = proxyUrlResJson.validUrl;
           setValidUrl(validUrl);
         } catch {
-          // if the proxied URL is not valid, reset it
-          setValidUrl("");
           console.error('Error in calling `/pdftron-proxy`. Check server log');
         }
         const { pathname } = new URL(validUrl);
