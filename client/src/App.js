@@ -28,6 +28,8 @@ function App() {
       if (proxyUrlRes.status === 400) {
         setFetchError((await proxyUrlRes.json()).errorMessage);
         setLoading(false);
+        // if the proxied URL is not valid, reset it
+        setValidUrl("");
       } else {
         const proxyUrlResJson = await proxyUrlRes.json();
         let validUrl = url;
@@ -36,6 +38,8 @@ function App() {
           validUrl = proxyUrlResJson.validUrl;
           setValidUrl(validUrl);
         } catch {
+          // if the proxied URL is not valid, reset it
+          setValidUrl("");
           console.error('Error in calling `/pdftron-proxy`. Check server log');
         }
         const { pathname } = new URL(validUrl);
@@ -56,7 +60,7 @@ function App() {
   };
 
   const downloadPDF = async () => {
-    if (response.iframeUrl) {
+    if (validUrl && response.iframeUrl) {
       setLoading(true);
       setFetchError('');
       try {
@@ -83,6 +87,8 @@ function App() {
         setFetchError('Trouble downloading, please make sure the server is running. `cd server && npm start`');
         setLoading(false);
       }
+    } else {
+      setFetchError('Please enter a valid URL and try again.');
     }
   };
 
