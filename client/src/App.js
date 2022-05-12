@@ -24,7 +24,6 @@ function App() {
     try {
       // first fetch for the proxied url
       const proxyUrlRes = await fetch(`${PATH}/pdftron-proxy?url=${url}`, { credentials: 'include' });
-      setValidUrl(url);
       if (proxyUrlRes.status === 400) {
         setFetchError((await proxyUrlRes.json()).errorMessage);
         setLoading(false);
@@ -57,7 +56,7 @@ function App() {
   };
 
   const downloadPDF = async () => {
-    if (response.iframeUrl) {
+    if (validUrl && response.iframeUrl) {
       setLoading(true);
       setFetchError('');
       try {
@@ -84,6 +83,8 @@ function App() {
         setFetchError('Trouble downloading, please make sure the server is running. `cd server && npm start`');
         setLoading(false);
       }
+    } else {
+      setFetchError('Please enter a valid URL and try again.');
     }
   };
 
