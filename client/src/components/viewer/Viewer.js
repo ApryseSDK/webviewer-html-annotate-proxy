@@ -11,7 +11,10 @@ const Viewer = ({ res, loadURL }) => {
 
   useEffect(() => {
     WebViewer(
-      { path: '/lib' },
+      {
+        path: '/lib',
+        disableVirtualDisplayMode: true,
+      },
       viewer.current
     ).then(async (instance) => {
       setInstance(instance);
