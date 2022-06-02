@@ -12,7 +12,6 @@ import './Nav.css';
 
 const Nav = ({ handleSubmit, fetchError, showSpinner, handleDownload, browseMode }) => {
   const [url, setUrl] = useState('');
-  const [urlWithHttp, setUrlWithHttp] = useState('');
   const [error, setError] = useState('');
 
   // eslint-disable-next-line no-useless-escape
@@ -23,26 +22,28 @@ const Nav = ({ handleSubmit, fetchError, showSpinner, handleDownload, browseMode
     setError(fetchError);
   }, [fetchError]);
 
-  useEffect(() => {
+  const setHTTPForURL = (url) => {
     if (regexURLWithHttp.test(url)) {
-      setUrlWithHttp(url);
-    } else {
-      setUrlWithHttp(`https://${url}`);
+      return url;
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [url]);
+    return `https://${url}`;
+  };
 
   // test is URL (without https://) is valid https://regexr.com/3e6m0
   const isValidURL = (url) => {
+    if (url.startsWith('file:/')) {
+      return false;
+    }
     return regexURL.test(url);
   }
 
   const onSubmit = () => {
-    if (!!url && isValidURL(url)) {
-      handleSubmit(urlWithHttp);
-    } else {
+    if (!url || !isValidURL(url)) {
       setError('Please enter a valid URL and try again.');
+      return;
     }
+
+    handleSubmit(setHTTPForURL(url));
   }
 
   return (
