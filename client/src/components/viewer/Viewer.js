@@ -20,6 +20,7 @@ const Viewer = ({ res, loadURL }) => {
       setInstance(instance);
       const { FitMode, docViewer } = instance;
       instance.setFitMode(FitMode.FitWidth);
+
       // Extends WebViewer to allow loading HTML5 files from URL or static folder.
       const htmlModule = await initializeHTMLViewer(instance);
 
@@ -40,7 +41,8 @@ const Viewer = ({ res, loadURL }) => {
   useEffect(() => {
     if (HTMLModule && Object.keys(res).length > 0) {
       const { iframeUrl, width, height, urlToProxy } = res;
-      HTMLModule.loadHTMLPage({ iframeUrl, width, height, urlToProxy });
+      const license = `---- Insert commercial license key here after purchase ----`;
+      HTMLModule.loadHTMLPage({ iframeUrl, width, height, urlToProxy, license });
     }
   }, [HTMLModule, res]);
 
