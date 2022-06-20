@@ -11,7 +11,7 @@ const OPTIONS = {
   SERVER_ROOT: `http://${REACT_HOST}`,
   PORT: NODE_PORT,
   CORS_OPTIONS: { origin: `http://${REACT_HOST}:${PORT}`, credentials: true },
-  // COOKIE_SETTING: { sameSite: 'none', secure: true },
+  ALLOW_HTTP_PROXY: true,
 };
 
 HTMLProxyServer.createServer(OPTIONS);
