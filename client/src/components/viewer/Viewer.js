@@ -33,6 +33,14 @@ const Viewer = ({ res, loadURL }) => {
 
       setHTMLModule(htmlModule);
 
+      window.loadDocument = () => {
+        instance.loadDocument('/PDFTRON_about.pdf');
+      }
+
+      window.loadURL = () => {
+        loadURL(`https://www.pdftron.com/`);
+      }
+
       loadURL(`https://www.pdftron.com/`);
     });
     // eslint-disable-next-line
@@ -41,6 +49,7 @@ const Viewer = ({ res, loadURL }) => {
   useEffect(() => {
     if (HTMLModule && Object.keys(res).length > 0) {
       const { iframeUrl, width, height, urlToProxy } = res;
+      console.log('iframeURL', iframeUrl);
       const license = `---- Insert commercial license key here after purchase ----`;
       HTMLModule.loadHTMLPage({ iframeUrl, width, height, urlToProxy, license });
     }
