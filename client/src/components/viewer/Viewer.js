@@ -18,20 +18,11 @@ const Viewer = ({ res, loadURL }) => {
       viewer.current
     ).then(async (instance) => {
       setInstance(instance);
-      const { FitMode, docViewer } = instance;
-      instance.setFitMode(FitMode.FitWidth);
 
       const license = `---- Insert commercial license key here after purchase ----`;
 
       // Extends WebViewer to allow loading HTML5 files from URL or static folder.
       const htmlModule = await initializeHTMLViewer(instance, { license });
-
-      // needs to reset FitMode on subsequent loads
-      docViewer.on('documentLoaded', () => {
-        if (instance.getFitMode() !== FitMode.FitWidth) {
-          instance.setFitMode(FitMode.FitWidth);
-        }
-      });
 
       setHTMLModule(htmlModule);
 
