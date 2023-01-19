@@ -17,13 +17,16 @@ function App() {
   const PORT = process.env.REACT_APP_NODE_PORT;
   const PATH = `http://${SERVER_ROOT}:${PORT}`;
 
-  const loadURL = async (url) => {
+  const loadURL = async (url, customHeaders = null) => {
     setLoading(true);
     setFetchError('');
 
     try {
       // first fetch for the proxied url
-      const proxyUrlRes = await fetch(`${PATH}/pdftron-proxy?url=${url}`, { credentials: 'include' });
+      const proxyUrlRes = await fetch(`${PATH}/pdftron-proxy?url=${url}`, {
+        credentials: 'include',
+        headers: customHeaders,
+      });
       if (proxyUrlRes.status === 400) {
         setFetchError((await proxyUrlRes.json()).errorMessage);
         setLoading(false);

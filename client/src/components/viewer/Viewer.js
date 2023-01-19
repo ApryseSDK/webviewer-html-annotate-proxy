@@ -27,6 +27,15 @@ const Viewer = ({ res, loadURL }) => {
       setHTMLModule(htmlModule);
 
       loadURL(`https://www.pdftron.com/`);
+
+      /* How to proxy with custom HTTP headers */
+      // loadURL(`https://www.pdftron.com/`, {
+      //   customheaders: JSON.stringify({
+      //     Authorization: 'token',
+      //     'custom-header': 'custom token',
+      //   }),
+      //   // invalid values: {}, { key: value }, "random string that can't be parsed"
+      // });
     });
     // eslint-disable-next-line
   }, []);
