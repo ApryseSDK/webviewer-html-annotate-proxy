@@ -17,7 +17,7 @@ function App() {
   const PORT = process.env.REACT_APP_NODE_PORT;
   const PATH = `http://${SERVER_ROOT}:${PORT}`;
 
-  const loadURL = async (url, customHeaders = null) => {
+  const loadURL = async (url, customHeaders = {}) => {
     setLoading(true);
     setFetchError('');
 
