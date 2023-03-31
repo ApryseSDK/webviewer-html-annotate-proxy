@@ -26,7 +26,7 @@ const Viewer = ({ res, loadURL }) => {
 
       setHTMLModule(htmlModule);
 
-      loadURL(`https://www.pdftron.com/`);
+      loadURL(`https://apryse.com/`);
 
       /* How to proxy with custom HTTP headers */
       // loadURL(`https://www.pdftron.com/`, {
