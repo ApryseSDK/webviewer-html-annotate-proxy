@@ -3,6 +3,8 @@ Annotate live HTML pages by simply providing URL. This way you can preserve all 
 
 The sample uses [WebViewer HTML by PDFTron](https://www.npmjs.com/package/@pdftron/webviewer-html) for annotating HTML and [Proxy Server by PDFTron](https://www.npmjs.com/package/@pdftron/webviewer-html-proxy-server) for proxying the website from URL. 
 
+**Please make sure to check [the CHANGELOG](https://docs.apryse.com/documentation/web/guides/html/changelog/) to ensure versions of WebViewer and WebViewer-HTML are compatible.**
+
 ## Install
 
 We have prepared a single script for installing both client and server.
