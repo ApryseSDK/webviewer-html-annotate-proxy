@@ -98,7 +98,7 @@ function App() {
       pageSizes: [pageDimensions],
     });
 
-    const xfdf = await instance.docViewer
+    const xfdf = await instance.Core.documentViewer
       .getAnnotationManager()
       .exportAnnotations();
     const data = await doc.getFileData({ xfdfString: xfdf });
