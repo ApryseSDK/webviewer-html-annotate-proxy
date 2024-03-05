@@ -11,6 +11,7 @@ const OPTIONS = {
   SERVER_ROOT: `http://${REACT_HOST}`,
   PORT: NODE_PORT,
   CORS_OPTIONS: { origin: `http://${REACT_HOST}:${PORT}`, credentials: true },
+  ALLOW_POTENTIALLY_UNSAFE_URL: false, // setting this to true will disable URL validation
   ALLOW_HTTP_PROXY: true,
 };
 
