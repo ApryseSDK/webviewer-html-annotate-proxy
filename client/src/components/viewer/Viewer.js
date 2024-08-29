@@ -6,39 +6,42 @@ import './Viewer.css';
 
 const Viewer = ({ res, loadURL }) => {
   const viewer = useRef(null);
+  const beenInitialised = useRef(false);
   const [HTMLModule, setHTMLModule] = useState(null);
   const { setInstance } = useContext(WebViewerContext);
 
   useEffect(() => {
-    WebViewer(
-      {
-        path: '/lib',
-        disableVirtualDisplayMode: true,
-      },
-      viewer.current
-    ).then(async (instance) => {
-      setInstance(instance);
+    if (!beenInitialised.current) {
+      beenInitialised.current = true;
+      WebViewer(
+        {
+          path: '/lib',
+          disableVirtualDisplayMode: true,
+        },
+        viewer.current
+      ).then(async (instance) => {
+        setInstance(instance);
 
-      const license = `---- Insert commercial license key here after purchase ----`;
+        const license = `---- Insert commercial license key here after purchase ----`;
 
-      // Extends WebViewer to allow loading HTML5 files from URL or static folder.
-      const htmlModule = await initializeHTMLViewer(instance, { license });
+        // Extends WebViewer to allow loading HTML5 files from URL or static folder.
+        const htmlModule = await initializeHTMLViewer(instance, { license });
 
-      setHTMLModule(htmlModule);
+        setHTMLModule(htmlModule);
 
-      loadURL(`https://docs.apryse.com/documentation/web/guides/html/load-html/`);
+        loadURL(`https://docs.apryse.com/documentation/web/guides/html/load-html/`);
 
-      /* How to proxy with custom HTTP headers */
-      // loadURL(`https://www.pdftron.com/`, {
-      //   customheaders: JSON.stringify({
-      //     Authorization: 'token',
-      //     'custom-header': 'custom token',
-      //   }),
-      //   // invalid values: {}, { key: value }, "random string that can't be parsed"
-      // });
-    });
-    // eslint-disable-next-line
-  }, []);
+        /* How to proxy with custom HTTP headers */
+        // loadURL(`https://www.pdftron.com/`, {
+        //   customheaders: JSON.stringify({
+        //     Authorization: 'token',
+        //     'custom-header': 'custom token',
+        //   }),
+        //   // invalid values: {}, { key: value }, "random string that can't be parsed"
+        // });
+      });
+    }
+  }, [loadURL, setInstance]);
 
   useEffect(() => {
     if (HTMLModule && Object.keys(res).length > 0) {
