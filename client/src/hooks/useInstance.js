@@ -1,4 +1,4 @@
-import WebViewerContext from '../context/webviewer'
+import WebViewerContext from '../context/webviewer';
 import { useContext } from 'react';
 
 export default function useInstance() {
