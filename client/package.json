@@ -1,24 +1,27 @@
 {
-  "name": "webviewer-html",
+  "name": "client",
   "version": "1.0.0",
   "private": true,
   "dependencies": {
-    "@chakra-ui/react": "^1.6.4",
-    "@emotion/react": "^11.4.0",
-    "@emotion/styled": "^11.3.0",
-    "@pdftron/webviewer": "^10.7.0",
-    "@pdftron/webviewer-html": "^5.0.0",
-    "framer-motion": "^4.1.17",
-    "react": "^17.0.1",
-    "react-dom": "^17.0.1",
-    "react-scripts": "5.0.0"
+    "@chakra-ui/react": "^2.8.2",
+    "@emotion/react": "^11.13.3",
+    "@emotion/styled": "^11.13.0",
+    "@pdftron/webviewer": "^10.11.1",
+    "@pdftron/webviewer-html": "^5.0.1",
+    "framer-motion": "^11.3.30",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-scripts": "^5.0.1",
+    "webviewer-html-annotate-proxy": "file:.."
+  },
+  "devDependencies": {
+    "shx": "^0.3.4"
   },
   "scripts": {
-    "start": "cp ${ENV:-'../.env'} .env.local && react-scripts start",
+    "start": "shx cp -r ../.env .env.local && react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject",
-    "postinstall": "node tools/copy-webviewer-files.js"
+    "eject": "react-scripts eject"
   },
   "eslintConfig": {
     "extends": [

@@ -80,8 +80,7 @@ function App() {
           setFetchError('Trouble downloading, check server log.');
         }
         setLoading(false);
-      }
-      catch (error) {
+      } catch (error) {
         console.error(error);
         setFetchError('Trouble downloading, please make sure the server is running. `cd server && npm start`');
         setLoading(false);
@@ -116,7 +115,7 @@ function App() {
 
   const browseMode = () => {
     instance && instance.UI.setToolbarGroup('toolbarGroup-View');
-  }
+  };
 
   return (
     <WebViewerContext.Provider value={{ instance, setInstance }}>

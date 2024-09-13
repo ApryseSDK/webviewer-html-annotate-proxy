@@ -35,7 +35,7 @@ const Nav = ({ handleSubmit, fetchError, showSpinner, handleDownload, browseMode
       return false;
     }
     return regexURL.test(url);
-  }
+  };
 
   const onSubmit = () => {
     if (!url || !isValidURL(url)) {
@@ -44,7 +44,7 @@ const Nav = ({ handleSubmit, fetchError, showSpinner, handleDownload, browseMode
     }
 
     handleSubmit(setHTTPForURL(url));
-  }
+  };
 
   return (
     <div className="Nav">
@@ -62,8 +62,8 @@ const Nav = ({ handleSubmit, fetchError, showSpinner, handleDownload, browseMode
             setError('');
             setUrl(e.target.value);
           }}
-          onKeyPress={(e) => {
-            if (e.key === "Enter") {
+          onKeyDown={(e) => {
+            if (e.key === 'Enter') {
               onSubmit();
             }
           }}
