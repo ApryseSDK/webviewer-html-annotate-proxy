@@ -13,7 +13,7 @@ const Viewer = ({ res, loadURL }) => {
   useEffect(() => {
     if (!beenInitialised.current) {
       beenInitialised.current = true;
-      WebViewer(
+      WebViewer.Iframe(
         {
           path: '/lib',
           disableVirtualDisplayMode: true,
